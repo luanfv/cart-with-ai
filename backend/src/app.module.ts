@@ -6,6 +6,8 @@ import { AppController } from './infra/api/app.controller';
 import { StoreRepository } from './infra/repository/store.repository';
 import { Store } from './infra/database/entity/store.entity';
 import { Product } from './infra/database/entity/product.entity';
+import { CatalogRepository } from './infra/repository/catalog.repository';
+import { CatalogController } from './infra/api/catalog.controller';
 
 @Module({
   imports: [
@@ -37,7 +39,8 @@ import { Product } from './infra/database/entity/product.entity';
       inject: [ConfigService],
     },
     StoreRepository,
+    CatalogRepository,
   ],
-  controllers: [AppController],
+  controllers: [AppController, CatalogController],
 })
 export class AppModule {}
