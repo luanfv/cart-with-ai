@@ -54,15 +54,21 @@ export class CatalogRepository {
       SELECT
         s.id AS store_id,
         s.name AS store_name,
-        p.id AS product_id,
-        p.name AS product_name,
-        p.price AS product_price
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'id', p.id,
+            'name', p.name,
+            'price', p.price
+          )
+        ) AS products
       FROM
         stores s
       JOIN
         products p ON s.id = p.store_id
       WHERE
-        p.name ILIKE $1;
+        p.name ILIKE $1
+      GROUP BY
+        s.id, s.name;
     `;
 
     const result = await this.storeRepository.query(query, [
@@ -76,14 +82,7 @@ export class CatalogRepository {
     const catalogs: CatalogAggregate[] = result.map((row) => {
       return CatalogAggregate.restore(
         { id: row.store_id, name: row.store_name },
-        [
-          {
-            id: row.product_id,
-            name: row.product_name,
-            price: row.product_price,
-            embedding: [],
-          },
-        ],
+        row.products,
       );
     });
 
