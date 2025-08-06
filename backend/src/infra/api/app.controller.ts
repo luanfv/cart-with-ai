@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
+import { StoreRepository } from '../repository/store.repository';
 
 @Controller('/api')
 export class AppController {
@@ -9,11 +10,13 @@ export class AppController {
   constructor(
     private readonly openAI: OpenAI,
     private readonly configSerivce: ConfigService,
+    @Inject(StoreRepository)
+    private readonly storeRepository: StoreRepository,
   ) {
     this.openAiModel = this.configSerivce.getOrThrow<string>('OPEN_AI_MODEL');
   }
 
-  @Get()
+  @Get('/message')
   async generateMessage() {
     const response = await this.openAI.responses.create({
       model: this.openAiModel,
@@ -21,5 +24,11 @@ export class AppController {
       max_output_tokens: 20,
     });
     return { message: response.output_text };
+  }
+
+  @Get('/stores')
+  async getStores() {
+    const stores = await this.storeRepository.getAll();
+    return { stores };
   }
 }
