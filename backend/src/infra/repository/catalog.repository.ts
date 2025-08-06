@@ -48,4 +48,45 @@ export class CatalogRepository {
 
     return catalog;
   }
+
+  async findByProductName(productName: string): Promise<CatalogAggregate[]> {
+    const query = `
+      SELECT
+        s.id AS store_id,
+        s.name AS store_name,
+        p.id AS product_id,
+        p.name AS product_name,
+        p.price AS product_price
+      FROM
+        stores s
+      JOIN
+        products p ON s.id = p.store_id
+      WHERE
+        p.name ILIKE $1;
+    `;
+
+    const result = await this.storeRepository.query(query, [
+      `%${productName}%`,
+    ]);
+
+    if (!result || result.length === 0) {
+      return [];
+    }
+
+    const catalogs: CatalogAggregate[] = result.map((row) => {
+      return CatalogAggregate.restore(
+        { id: row.store_id, name: row.store_name },
+        [
+          {
+            id: row.product_id,
+            name: row.product_name,
+            price: row.product_price,
+            embedding: [],
+          },
+        ],
+      );
+    });
+
+    return catalogs;
+  }
 }

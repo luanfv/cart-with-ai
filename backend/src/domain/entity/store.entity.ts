@@ -11,6 +11,10 @@ export class StoreEntity {
     return new StoreEntity(id, name);
   }
 
+  get id(): number {
+    return this._id;
+  }
+
   get name(): string {
     return this._name;
   }

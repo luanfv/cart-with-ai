@@ -14,5 +14,5 @@ export class Product {
   price: number;
 
   @Column('simple-json', { nullable: true })
-  embedding: number[];
+  embedding?: number[];
 }
