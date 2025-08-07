@@ -57,6 +57,11 @@ async function seedDatabase() {
         ('Fermento químico - 100g', 319, 3, NULL);
     `);
 
+    await queryRunner.query(`
+      INSERT INTO users (name, email, password) VALUES
+        ('John Doe', 'johndoe@email.com', 'dummyhash');  
+    `);
+
     console.log('Database seeded successfully!');
   } catch (error) {
     console.error('Error seeding database:', error);
