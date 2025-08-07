@@ -1,0 +1,6 @@
+# .copilotignore
+*dist
+*node_modules
+*build
+*.env
+*.key
