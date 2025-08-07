@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/infra/database/data-source.ts",
-    "seed": "npx ts-node -r tsconfig-paths/register src/infra/database/seed.ts"
+    "migration": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/shared/infra/database/data-source.ts",
+    "seed": "npx ts-node -r tsconfig-paths/register src/shared/infra/database/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from '../../../shared/infra/database/entity/product.entity';
+import { Store } from '../../../shared/infra/database/entity/store.entity';
 import { Repository } from 'typeorm';
-import { Store } from '../database/entity/store.entity';
-import { Product } from '../database/entity/product.entity';
-import { CatalogAggregate } from '../../domain/catalog.aggrega';
+import { CatalogAggregate } from '../../domain/catalog.aggregate';
 
 @Injectable()
 export class CatalogRepository {
