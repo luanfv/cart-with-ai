@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { AppDataSource } from './data-source';
 
 async function seedDatabase() {
@@ -100,8 +101,8 @@ async function seedDatabase() {
 
       if (existingUser.length === 0) {
         await queryRunner.query(
-          `INSERT INTO users (name, email, password) VALUES ($1, $2, $3)`,
-          [userData.name, userData.email, userData.password],
+          `INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)`,
+          [randomUUID(), userData.name, userData.email, userData.password],
         );
         console.log(`User "${userData.email}" added.`);
       } else {

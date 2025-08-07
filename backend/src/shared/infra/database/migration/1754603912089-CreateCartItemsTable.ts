@@ -4,8 +4,8 @@ export class CreateCartItemsTable1754603912089 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TABLE cart_items (
-        id SERIAL PRIMARY KEY,
-        cart_id INTEGER REFERENCES carts(id),
+        id VARCHAR(46) PRIMARY KEY,
+        cart_id VARCHAR(46) REFERENCES carts(id),
         product_id INTEGER REFERENCES products(id),
         quantity INTEGER NOT NULL DEFAULT 1,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
