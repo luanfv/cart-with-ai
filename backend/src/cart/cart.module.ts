@@ -10,14 +10,16 @@ import { Store } from '@shared/infra/database/entity/store.entity';
 import { CreateCartService } from './application/create-cart.service';
 import { UserRepository } from './infra/repository/user.repository';
 import { StoreRepository } from './infra/repository/store.repository';
-import { FindCartService } from './application/find-cart.service';
+import { FindCartByIdService } from './application/find-cart-by-id.service';
 import { ProductRepository } from './infra/repository/product.repository';
+import { FindCartByUserService } from './application/find-cart-by-user.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart, CartItem, User, Product, Store])],
   providers: [
     CreateCartService,
-    FindCartService,
+    FindCartByIdService,
+    FindCartByUserService,
     CartRepository,
     UserRepository,
     StoreRepository,

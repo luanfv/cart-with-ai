@@ -15,3 +15,6 @@ Content-Type: application/json
 
 ### Get Cart by ID
 GET http://localhost:3000/api/cart/0578ccd8-e4f2-4bef-ba1d-eb529ec8bd4c
+
+### Get by User ID
+GET http://localhost:3000/api/cart/user/6e1c8907-ca9e-4d2c-930e-5fb1243d07f3

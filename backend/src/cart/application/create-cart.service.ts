@@ -32,12 +32,11 @@ export class CreateCartService {
     storeId,
     items,
   }: CreateCartInput): Promise<CartAggregate> {
-    const cartByUserAndStore =
-      await this.cartRepository.findByUserIdAndStoreIdAndActive(
-        userId,
-        storeId,
-        true,
-      );
+    const cartByUserAndStore = await this.cartRepository.find({
+      userId,
+      storeId,
+      active: true,
+    });
     if (cartByUserAndStore) {
       throw new UnprocessableEntityException(
         'Cart already exists for user and store',

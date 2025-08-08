@@ -1,17 +1,23 @@
+import { FindCartByUserService } from './../../application/find-cart-by-user.service';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateCartService } from '@cart/application/create-cart.service';
 import {
   CreateCartBodyDtoInput,
   CreateCartDtoOutput,
 } from './dto/create-cart.dto';
-import { FindCartService } from '@cart/application/find-cart.service';
+import { FindCartByIdService } from '@cart/application/find-cart-by-id.service';
 import { CartIdParamDtoInput, FindCartDtoOutput } from './dto/find-cart.dto';
+import {
+  FindCartByUserDtoOutput,
+  FindCartByUserParamsDtoInput,
+} from './dto/find-cart-by-user.dto';
 
 @Controller('/api/cart')
 export class CartController {
   constructor(
     private readonly createCartService: CreateCartService,
-    private readonly findCartService: FindCartService,
+    private readonly findCartServiceById: FindCartByIdService,
+    private readonly findCartByUserService: FindCartByUserService,
   ) {}
 
   @Post()
@@ -35,12 +41,27 @@ export class CartController {
   async getCart(
     @Param() params: CartIdParamDtoInput,
   ): Promise<FindCartDtoOutput> {
-    const cart = await this.findCartService.execute(params.id);
+    const cart = await this.findCartServiceById.execute(params.id);
     return new FindCartDtoOutput(
       cart.id,
       cart.items,
       cart.active,
       cart.storeId,
+    );
+  }
+
+  @Get('user/:userId')
+  async getCartsByUser(
+    @Param() params: FindCartByUserParamsDtoInput,
+  ): Promise<FindCartByUserDtoOutput> {
+    const carts = await this.findCartByUserService.execute(params.userId);
+    return new FindCartByUserDtoOutput(
+      params.userId,
+      carts.map((cart) => ({
+        id: cart.id,
+        storeId: cart.storeId,
+        items: cart.items,
+      })),
     );
   }
 }

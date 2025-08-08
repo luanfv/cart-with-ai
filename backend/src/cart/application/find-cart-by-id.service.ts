@@ -3,7 +3,7 @@ import { CartRepository } from '@cart/infra/repository/cart.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
-export class FindCartService {
+export class FindCartByIdService {
   constructor(private readonly cartRepository: CartRepository) {}
 
   async execute(cartId: string): Promise<CartAggregate> {

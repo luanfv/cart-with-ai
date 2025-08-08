@@ -72,33 +72,34 @@ export class CartRepository {
     );
   }
 
-  async findByUserIdAndStoreIdAndActive(
-    userId: string,
-    storeId: string,
-    active: boolean,
-  ): Promise<CartAggregate | null> {
-    if (!userId || !storeId) {
-      return null;
-    }
-    const cartData = await this.cartRepository.findOne({
-      where: { userId, storeId, active },
-    });
-    if (!cartData) {
-      return null;
-    }
-    const cartItemsData = await this.cartItemRepository.find({
-      where: { cartId: cartData.id },
-    });
-    return CartAggregate.restore(
-      cartData.id,
-      cartData.userId,
-      cartData.storeId,
-      cartItemsData.map((item) => ({
-        id: item.id,
-        productId: item.productId,
-        quantity: item.quantity,
-      })),
-      cartData.active,
+  async find(
+    filter: Partial<{
+      id: string;
+      userId: string;
+      storeId: string;
+      active: boolean;
+    }>,
+  ): Promise<CartAggregate[]> {
+    const cartsData = await this.cartRepository.find({ where: filter });
+    if (!cartsData || cartsData.length === 0) return [];
+    const carts = await Promise.all(
+      cartsData.map(async (cartData) => {
+        const cartItemsData = await this.cartItemRepository.find({
+          where: { cartId: cartData.id },
+        });
+        return CartAggregate.restore(
+          cartData.id,
+          cartData.userId,
+          cartData.storeId,
+          cartItemsData.map((item) => ({
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+          cartData.active,
+        );
+      }),
     );
+    return carts;
   }
 }
