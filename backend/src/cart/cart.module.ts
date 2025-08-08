@@ -7,10 +7,20 @@ import { CartItem } from '@shared/infra/database/entity/cart-item.entity';
 import { User } from '@shared/infra/database/entity/user.entity';
 import { Product } from '@shared/infra/database/entity/product.entity';
 import { Store } from '@shared/infra/database/entity/store.entity';
+import { CreateCartService } from './application/create-cart.service';
+import { UserRepository } from './infra/repository/user.repository';
+import { StoreRepository } from './infra/repository/store.repository';
+import { FindCartService } from './application/find-cart.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart, CartItem, User, Product, Store])],
-  providers: [CartRepository],
+  providers: [
+    CreateCartService,
+    FindCartService,
+    CartRepository,
+    UserRepository,
+    StoreRepository,
+  ],
   controllers: [CartController],
 })
 export class CartModule {}

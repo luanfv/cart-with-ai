@@ -1,5 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { CartItemEntity } from './cart-item.entity';
+import { UserEntity } from './user.entity';
+import { StoreEntity } from './store.entity';
+import { ProductEntity } from './product.entity';
 
 type CartItemProp = {
   id: string;
@@ -29,15 +32,15 @@ export class CartAggregate {
   }
 
   static create(
-    userId: string,
-    storeId: string,
+    user: UserEntity,
+    store: StoreEntity,
     items: CartItemProp[],
     active: boolean,
   ): CartAggregate {
     return new CartAggregate(
       randomUUID(),
-      userId,
-      storeId,
+      user.id,
+      store.id,
       items.map((item) =>
         CartItemEntity.restore(item.id, item.productId, item.quantity),
       ),
@@ -83,34 +86,38 @@ export class CartAggregate {
     return this._active;
   }
 
-  addItem(productId: string, quantity: number): void {
+  addItem(user: UserEntity, product: ProductEntity, quantity: number): void {
+    if (user.id !== this._userId) {
+      return;
+    }
+    if (product.storeId !== this._storeId) {
+      return;
+    }
     const existingItem = this._items.find(
-      (item) => item.productId === productId,
+      (item) => item.productId === product.id,
     );
     if (existingItem) {
       existingItem.quantity += quantity;
       return;
     }
-    const newItem = CartItemEntity.create(productId, quantity);
+    const newItem = CartItemEntity.create(product.id, quantity);
     this._items.push(newItem);
   }
 
-  removeItem(productId: string): void {
+  removeItem(user: UserEntity, productId: string): void {
+    if (user.id !== this._userId) {
+      return;
+    }
     this._items = this._items.filter((item) => item.productId !== productId);
   }
 
-  updateQuantity(productId: string, quantity: number): void {
+  updateQuantity(user: UserEntity, productId: string, quantity: number): void {
+    if (user.id !== this._userId) {
+      return;
+    }
     const item = this._items.find((item) => item.productId === productId);
     if (item) {
       item.quantity = quantity;
     }
-  }
-
-  clearCart(): void {
-    this._items = [];
-  }
-
-  setActive(active: boolean): void {
-    this._active = active;
   }
 }

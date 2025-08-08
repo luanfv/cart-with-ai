@@ -24,9 +24,12 @@ export class CartRepository {
     await this.cartRepository.save(cartData);
   }
 
-  async findById(cartId: string): Promise<CartAggregate | null> {
+  async findById(id: string): Promise<CartAggregate | null> {
+    if (!id) {
+      return null;
+    }
     const cartData = await this.cartRepository.findOne({
-      where: { id: cartId },
+      where: { id },
     });
     if (!cartData) {
       return null;
