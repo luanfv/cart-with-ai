@@ -3,7 +3,11 @@ import { CartRepository } from '@cart/infra/repository/cart.repository';
 import { ProductRepository } from '@cart/infra/repository/product.repository';
 import { StoreRepository } from '@cart/infra/repository/store.repository';
 import { UserRepository } from '@cart/infra/repository/user.repository';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 type CreateCartInput = {
   userId: string;
@@ -28,6 +32,17 @@ export class CreateCartService {
     storeId,
     items,
   }: CreateCartInput): Promise<CartAggregate> {
+    const cartByUserAndStore =
+      await this.cartRepository.findByUserIdAndStoreIdAndActive(
+        userId,
+        storeId,
+        true,
+      );
+    if (cartByUserAndStore) {
+      throw new UnprocessableEntityException(
+        'Cart already exists for user and store',
+      );
+    }
     const [user, store, products] = await Promise.all([
       this.userRepository.findById(userId),
       this.storeRepository.findById(storeId),

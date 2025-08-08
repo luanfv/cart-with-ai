@@ -102,6 +102,9 @@ export class CartAggregate {
   }
 
   addItem(user: UserEntity, product: ProductEntity, quantity: number): void {
+    if (!this._active) {
+      throw new Error('Cannot add item to inactive cart');
+    }
     if (user.id !== this._userId) {
       return;
     }
@@ -117,5 +120,9 @@ export class CartAggregate {
     }
     const newItem = CartItemEntity.create(product, quantity);
     this._items.push(newItem);
+  }
+
+  disable(): void {
+    this._active = false;
   }
 }

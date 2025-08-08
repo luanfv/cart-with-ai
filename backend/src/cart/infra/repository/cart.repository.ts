@@ -71,4 +71,34 @@ export class CartRepository {
       cartData.active,
     );
   }
+
+  async findByUserIdAndStoreIdAndActive(
+    userId: string,
+    storeId: string,
+    active: boolean,
+  ): Promise<CartAggregate | null> {
+    if (!userId || !storeId) {
+      return null;
+    }
+    const cartData = await this.cartRepository.findOne({
+      where: { userId, storeId, active },
+    });
+    if (!cartData) {
+      return null;
+    }
+    const cartItemsData = await this.cartItemRepository.find({
+      where: { cartId: cartData.id },
+    });
+    return CartAggregate.restore(
+      cartData.id,
+      cartData.userId,
+      cartData.storeId,
+      cartItemsData.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      cartData.active,
+    );
+  }
 }
