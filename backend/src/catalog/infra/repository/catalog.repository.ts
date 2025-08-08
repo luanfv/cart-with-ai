@@ -14,7 +14,7 @@ export class CatalogRepository {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async findByStoreId(storeId: number): Promise<CatalogAggregate | undefined> {
+  async findByStoreId(storeId: string): Promise<CatalogAggregate | undefined> {
     const query = `
       SELECT
         s.id AS store_id,

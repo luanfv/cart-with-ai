@@ -1,11 +1,11 @@
 export class ProductEntity {
-  private _id: number;
+  private _id: string;
   private _name: string;
   private _price: number;
   private _embedding: number[];
 
   private constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     embedding: number[],
@@ -17,7 +17,7 @@ export class ProductEntity {
   }
 
   public static restore(
-    id: number,
+    id: string,
     name: string,
     price: number,
     embedding: number[],
@@ -25,7 +25,7 @@ export class ProductEntity {
     return new ProductEntity(id, name, price, embedding);
   }
 
-  get id(): number {
+  get id(): string {
     return this._id;
   }
 

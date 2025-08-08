@@ -3,12 +3,12 @@ import { ProductEntity } from './entity/product.entity';
 import { StoreEntity } from './entity/store.entity';
 
 type StoreParams = {
-  id: number;
+  id: string;
   name: string;
 };
 
 type ProductParams = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   embedding: number[];

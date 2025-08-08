@@ -6,7 +6,7 @@ export class CreateCartItemsTable1754603912089 implements MigrationInterface {
       CREATE TABLE cart_items (
         id VARCHAR(46) PRIMARY KEY,
         cart_id VARCHAR(46) REFERENCES carts(id),
-        product_id INTEGER REFERENCES products(id),
+        product_id VARCHAR(46) REFERENCES products(id),
         quantity INTEGER NOT NULL DEFAULT 1,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT unique_cart_product UNIQUE (cart_id, product_id)

@@ -10,9 +10,9 @@ async function seedDatabase() {
 
     // Seed Stores
     const storesData = [
-      { name: 'Supermercado Central' },
-      { name: 'Mercado Econômico' },
-      { name: 'SuperShop Express' },
+      { id: randomUUID(), name: 'Supermercado Central' },
+      { id: randomUUID(), name: 'Mercado Econômico' },
+      { id: randomUUID(), name: 'SuperShop Express' },
     ];
 
     for (const storeData of storesData) {
@@ -22,65 +22,194 @@ async function seedDatabase() {
       );
 
       if (existingStore.length === 0) {
-        await queryRunner.query(`INSERT INTO stores (name) VALUES ($1)`, [
-          storeData.name,
-        ]);
+        await queryRunner.query(
+          `INSERT INTO stores (id, name) VALUES ($1, $2)`,
+          [storeData.id, storeData.name],
+        );
         console.log(`Store "${storeData.name}" added.`);
       } else {
+        // Se já existe, pega o id existente para usar nos produtos
+        storeData.id = existingStore[0].id;
         console.log(`Store "${storeData.name}" already exists.`);
       }
     }
 
     // Seed Products
     const productsData = [
-      { name: 'Feijão preto - 1kg', price: 799, store_id: 1 },
-      { name: 'Arroz branco - 1kg', price: 599, store_id: 1 },
-      { name: 'Farinha de mandioca - 500g', price: 425, store_id: 1 },
-      { name: 'Linguiça calabresa - 500g', price: 1190, store_id: 1 },
-      { name: 'Costelinha suína - 1kg', price: 1890, store_id: 1 },
-      { name: 'Macarrão espaguete - 500g', price: 399, store_id: 1 },
-      { name: 'Peito de frango - 1kg', price: 1290, store_id: 1 },
-      { name: 'Creme de leite - 200g', price: 299, store_id: 1 },
-      { name: 'Queijo mussarela - 200g', price: 690, store_id: 1 },
-      { name: 'Cenoura - 1kg', price: 449, store_id: 1 },
-      { name: 'Ovos - dúzia', price: 999, store_id: 1 },
-      { name: 'Açúcar refinado - 1kg', price: 549, store_id: 1 },
-      { name: 'Chocolate em pó - 200g', price: 679, store_id: 1 },
-      { name: 'Fermento químico - 100g', price: 299, store_id: 1 },
-      { name: 'Óleo de soja - 900ml', price: 649, store_id: 1 },
-      { name: 'Feijão preto - 1kg', price: 749, store_id: 2 },
-      { name: 'Arroz branco - 1kg', price: 579, store_id: 2 },
-      { name: 'Linguiça calabresa - 500g', price: 1090, store_id: 2 },
-      { name: 'Costelinha suína - 1kg', price: 1790, store_id: 2 },
-      { name: 'Macarrão espaguete - 500g', price: 419, store_id: 2 },
-      { name: 'Peito de frango - 1kg', price: 1240, store_id: 2 },
-      { name: 'Creme de leite - 200g', price: 289, store_id: 2 },
-      { name: 'Cenoura - 1kg', price: 429, store_id: 2 },
-      { name: 'Ovos - dúzia', price: 959, store_id: 2 },
-      { name: 'Chocolate em pó - 200g', price: 659, store_id: 2 },
-      { name: 'Fermento químico - 100g', price: 289, store_id: 2 },
-      { name: 'Farinha de mandioca - 500g', price: 399, store_id: 3 },
-      { name: 'Linguiça calabresa - 500g', price: 1150, store_id: 3 },
-      { name: 'Peito de frango - 1kg', price: 1350, store_id: 3 },
-      { name: 'Creme de leite - 200g', price: 319, store_id: 3 },
-      { name: 'Queijo mussarela - 200g', price: 729, store_id: 3 },
-      { name: 'Cenoura - 1kg', price: 469, store_id: 3 },
-      { name: 'Ovos - dúzia', price: 1020, store_id: 3 },
-      { name: 'Açúcar refinado - 1kg', price: 569, store_id: 3 },
-      { name: 'Chocolate em pó - 200g', price: 699, store_id: 3 },
-      { name: 'Fermento químico - 100g', price: 319, store_id: 3 },
+      {
+        name: 'Feijão preto - 1kg',
+        price: 799,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Arroz branco - 1kg',
+        price: 599,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Farinha de mandioca - 500g',
+        price: 425,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Linguiça calabresa - 500g',
+        price: 1190,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Costelinha suína - 1kg',
+        price: 1890,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Macarrão espaguete - 500g',
+        price: 399,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Peito de frango - 1kg',
+        price: 1290,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Creme de leite - 200g',
+        price: 299,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Queijo mussarela - 200g',
+        price: 690,
+        storeName: 'Supermercado Central',
+      },
+      { name: 'Cenoura - 1kg', price: 449, storeName: 'Supermercado Central' },
+      { name: 'Ovos - dúzia', price: 999, storeName: 'Supermercado Central' },
+      {
+        name: 'Açúcar refinado - 1kg',
+        price: 549,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Chocolate em pó - 200g',
+        price: 679,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Fermento químico - 100g',
+        price: 299,
+        storeName: 'Supermercado Central',
+      },
+      {
+        name: 'Óleo de soja - 900ml',
+        price: 649,
+        storeName: 'Supermercado Central',
+      },
+
+      {
+        name: 'Feijão preto - 1kg',
+        price: 749,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Arroz branco - 1kg',
+        price: 579,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Linguiça calabresa - 500g',
+        price: 1090,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Costelinha suína - 1kg',
+        price: 1790,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Macarrão espaguete - 500g',
+        price: 419,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Peito de frango - 1kg',
+        price: 1240,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Creme de leite - 200g',
+        price: 289,
+        storeName: 'Mercado Econômico',
+      },
+      { name: 'Cenoura - 1kg', price: 429, storeName: 'Mercado Econômico' },
+      { name: 'Ovos - dúzia', price: 959, storeName: 'Mercado Econômico' },
+      {
+        name: 'Chocolate em pó - 200g',
+        price: 659,
+        storeName: 'Mercado Econômico',
+      },
+      {
+        name: 'Fermento químico - 100g',
+        price: 289,
+        storeName: 'Mercado Econômico',
+      },
+
+      {
+        name: 'Farinha de mandioca - 500g',
+        price: 399,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Linguiça calabresa - 500g',
+        price: 1150,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Peito de frango - 1kg',
+        price: 1350,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Creme de leite - 200g',
+        price: 319,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Queijo mussarela - 200g',
+        price: 729,
+        storeName: 'SuperShop Express',
+      },
+      { name: 'Cenoura - 1kg', price: 469, storeName: 'SuperShop Express' },
+      { name: 'Ovos - dúzia', price: 1020, storeName: 'SuperShop Express' },
+      {
+        name: 'Açúcar refinado - 1kg',
+        price: 569,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Chocolate em pó - 200g',
+        price: 699,
+        storeName: 'SuperShop Express',
+      },
+      {
+        name: 'Fermento químico - 100g',
+        price: 319,
+        storeName: 'SuperShop Express',
+      },
     ];
 
     for (const productData of productsData) {
+      // Busca o id da store pelo nome
+      const store = storesData.find((s) => s.name === productData.storeName);
+      if (!store) continue;
+
       const existingProduct = await queryRunner.query(
         `SELECT id FROM products WHERE name = $1 AND store_id = $2`,
-        [productData.name, productData.store_id],
+        [productData.name, store.id],
       );
 
       if (existingProduct.length === 0) {
         await queryRunner.query(
-          `INSERT INTO products (name, price, store_id, embedding) VALUES ($1, $2, $3, NULL)`,
-          [productData.name, productData.price, productData.store_id],
+          `INSERT INTO products (id, name, price, store_id, embedding) VALUES ($1, $2, $3, $4, NULL)`,
+          [randomUUID(), productData.name, productData.price, store.id],
         );
         console.log(`Product "${productData.name}" added.`);
       } else {
@@ -90,7 +219,12 @@ async function seedDatabase() {
 
     // Seed Users
     const usersData = [
-      { name: 'John Doe', email: 'johndoe@email.com', password: 'dummyhash' },
+      {
+        id: randomUUID(),
+        name: 'John Doe',
+        email: 'johndoe@email.com',
+        password: 'dummyhash',
+      },
     ];
 
     for (const userData of usersData) {
@@ -102,7 +236,7 @@ async function seedDatabase() {
       if (existingUser.length === 0) {
         await queryRunner.query(
           `INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)`,
-          [randomUUID(), userData.name, userData.email, userData.password],
+          [userData.id, userData.name, userData.email, userData.password],
         );
         console.log(`User "${userData.email}" added.`);
       } else {

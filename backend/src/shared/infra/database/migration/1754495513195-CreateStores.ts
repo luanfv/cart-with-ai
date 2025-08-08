@@ -4,7 +4,7 @@ export class CreateStores1754495513195 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TABLE stores (
-          id SERIAL PRIMARY KEY,
+          id VARCHAR(46) PRIMARY KEY,
           name VARCHAR(255) NOT NULL
       );
     `);

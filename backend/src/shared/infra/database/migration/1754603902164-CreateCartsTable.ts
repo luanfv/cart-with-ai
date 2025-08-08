@@ -7,7 +7,7 @@ export class CreateCartsTable1754603902164 implements MigrationInterface {
         id VARCHAR(46) PRIMARY KEY,
         user_id VARCHAR(46) REFERENCES users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        store_id INTEGER REFERENCES stores(id),
+        store_id VARCHAR(46) REFERENCES stores(id),
         active BOOLEAN DEFAULT TRUE
       );
     `);

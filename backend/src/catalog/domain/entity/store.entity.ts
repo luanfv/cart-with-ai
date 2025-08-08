@@ -1,17 +1,17 @@
 export class StoreEntity {
-  private _id: number;
+  private _id: string;
   private _name: string;
 
-  private constructor(id: number, name: string) {
+  private constructor(id: string, name: string) {
     this._id = id;
     this._name = name;
   }
 
-  public static restore(id: number, name: string): StoreEntity {
+  public static restore(id: string, name: string): StoreEntity {
     return new StoreEntity(id, name);
   }
 
-  get id(): number {
+  get id(): string {
     return this._id;
   }
 

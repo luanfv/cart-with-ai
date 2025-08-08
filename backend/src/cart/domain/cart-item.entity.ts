@@ -2,22 +2,22 @@ import { randomUUID } from 'node:crypto';
 
 export class CartItemEntity {
   private _id: string;
-  private _productId: number;
+  private _productId: string;
   private _quantity: number;
 
-  private constructor(id: string, productId: number, quantity: number) {
+  private constructor(id: string, productId: string, quantity: number) {
     this._id = id;
     this._productId = productId;
     this._quantity = quantity;
   }
 
-  static create(productId: number, quantity: number): CartItemEntity {
+  static create(productId: string, quantity: number): CartItemEntity {
     return new CartItemEntity(randomUUID(), productId, quantity);
   }
 
   static restore(
     id: string,
-    productId: number,
+    productId: string,
     quantity: number,
   ): CartItemEntity {
     return new CartItemEntity(id, productId, quantity);
@@ -27,7 +27,7 @@ export class CartItemEntity {
     return this._id;
   }
 
-  get productId(): number {
+  get productId(): string {
     return this._productId;
   }
 

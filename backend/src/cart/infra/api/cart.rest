@@ -1,0 +1,12 @@
+### Create Cart
+POST http://localhost:3000/api/cart
+Content-Type: application/json
+
+{
+  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3",
+  "storeId": "b6408d37-96a8-4cf1-8bd6-2599f6c87485",
+  "items": []
+}
+
+### Get Cart by ID
+GET http://localhost:3000/api/cart/abc
