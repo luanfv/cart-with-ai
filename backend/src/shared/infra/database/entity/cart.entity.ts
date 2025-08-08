@@ -1,25 +1,14 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { User } from './user.entity';
-import { Store } from './store.entity';
+import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('carts')
 export class Cart {
   @PrimaryColumn({ type: 'varchar' })
   id: string;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @Column({ name: 'user_id', type: 'varchar' })
   userId: string;
 
-  @ManyToOne(() => Store, (store) => store.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'store_id' })
+  @Column({ name: 'store_id', type: 'varchar' })
   storeId: string;
 
   @Column({ type: 'boolean', default: true })

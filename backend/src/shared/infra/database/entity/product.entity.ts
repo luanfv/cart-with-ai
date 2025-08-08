@@ -11,6 +11,9 @@ export class Product {
   @Column('int')
   price: number;
 
+  @Column({ name: 'store_id', type: 'varchar' })
+  storeId: string;
+
   @Column('simple-json', { nullable: true })
   embedding?: number[];
 }

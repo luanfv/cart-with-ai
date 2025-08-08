@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { ProductEntity } from './product.entity';
 
 export class CartItemEntity {
   private _id: string;
@@ -11,8 +12,11 @@ export class CartItemEntity {
     this._quantity = quantity;
   }
 
-  static create(productId: string, quantity: number): CartItemEntity {
-    return new CartItemEntity(randomUUID(), productId, quantity);
+  static create(product: ProductEntity, quantity: number): CartItemEntity {
+    if (!product || quantity <= 0) {
+      throw new Error('Invalid product or quantity');
+    }
+    return new CartItemEntity(randomUUID(), product.id, quantity);
   }
 
   static restore(

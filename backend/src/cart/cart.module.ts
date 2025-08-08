@@ -11,6 +11,7 @@ import { CreateCartService } from './application/create-cart.service';
 import { UserRepository } from './infra/repository/user.repository';
 import { StoreRepository } from './infra/repository/store.repository';
 import { FindCartService } from './application/find-cart.service';
+import { ProductRepository } from './infra/repository/product.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart, CartItem, User, Product, Store])],
@@ -20,6 +21,7 @@ import { FindCartService } from './application/find-cart.service';
     CartRepository,
     UserRepository,
     StoreRepository,
+    ProductRepository,
   ],
   controllers: [CartController],
 })

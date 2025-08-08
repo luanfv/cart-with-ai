@@ -15,22 +15,47 @@ export class CartRepository {
   ) {}
 
   async create(cart: CartAggregate): Promise<void> {
-    const cartData = {
-      id: cart.id,
-      userId: cart.userId,
-      storeId: cart.storeId,
-      active: cart.active,
-    };
-    await this.cartRepository.save(cartData);
+    const queryRunner =
+      this.cartRepository.manager.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const cartData = {
+        id: cart.id,
+        userId: cart.userId,
+        storeId: cart.storeId,
+        active: cart.active,
+      };
+      await queryRunner.manager.save(Cart, cartData);
+      const cartItemsData = cart.items.map((item) => ({
+        id: item.id,
+        cartId: cart.id,
+        productId: item.productId,
+        quantity: item.quantity,
+      }));
+      await queryRunner.manager.save(CartItem, cartItemsData);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async findById(id: string): Promise<CartAggregate | null> {
     if (!id) {
       return null;
     }
-    const cartData = await this.cartRepository.findOne({
-      where: { id },
-    });
+    const [cartData, cartItemsData] = await Promise.all([
+      this.cartRepository.findOne({
+        where: { id },
+      }),
+      this.cartItemRepository.find({
+        where: { cartId: id },
+      }),
+    ]);
     if (!cartData) {
       return null;
     }
@@ -38,7 +63,11 @@ export class CartRepository {
       cartData.id,
       cartData.userId,
       cartData.storeId,
-      [],
+      cartItemsData.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
       cartData.active,
     );
   }

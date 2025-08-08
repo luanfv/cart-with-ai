@@ -16,13 +16,19 @@ export class CartController {
 
   @Post()
   async createCart(
-    @Body() createCartDto: CreateCartBodyDtoInput,
+    @Body() { userId, storeId, items }: CreateCartBodyDtoInput,
   ): Promise<CreateCartDtoOutput> {
-    const cart = await this.createCartService.execute(
-      createCartDto.userId,
-      createCartDto.storeId,
+    const cart = await this.createCartService.execute({
+      userId,
+      storeId,
+      items,
+    });
+    return new CreateCartDtoOutput(
+      cart.id,
+      cart.storeId,
+      cart.active,
+      cart.items,
     );
-    return new CreateCartDtoOutput(cart.id);
   }
 
   @Get(':id')
@@ -30,6 +36,11 @@ export class CartController {
     @Param() params: CartIdParamDtoInput,
   ): Promise<FindCartDtoOutput> {
     const cart = await this.findCartService.execute(params.id);
-    return new FindCartDtoOutput(cart.id, cart.items, cart.active);
+    return new FindCartDtoOutput(
+      cart.id,
+      cart.items,
+      cart.active,
+      cart.storeId,
+    );
   }
 }

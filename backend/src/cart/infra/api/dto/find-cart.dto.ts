@@ -6,7 +6,7 @@ export class CartIdParamDtoInput {
   id: string;
 }
 
-type Items = {
+type Item = {
   id: string;
   productId: string;
   quantity: number;
@@ -15,7 +15,8 @@ type Items = {
 export class FindCartDtoOutput {
   constructor(
     readonly id: string,
-    readonly items: Items[],
+    readonly items: Item[],
     readonly active: boolean,
+    readonly storeId: string,
   ) {}
 }

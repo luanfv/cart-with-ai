@@ -10,6 +10,11 @@ type CartItemProp = {
   quantity: number;
 };
 
+type CreateCartItemProp = {
+  product: ProductEntity;
+  quantity: number;
+};
+
 export class CartAggregate {
   private _id: string;
   private _userId: string;
@@ -34,16 +39,22 @@ export class CartAggregate {
   static create(
     user: UserEntity,
     store: StoreEntity,
-    items: CartItemProp[],
+    items: CreateCartItemProp[],
     active: boolean,
   ): CartAggregate {
+    const invalidItem = items.find((item) => {
+      return item.product.storeId !== store.id;
+    });
+    if (invalidItem) {
+      throw new Error(
+        `Not found ${invalidItem.product.id} in store ${store.id}`,
+      );
+    }
     return new CartAggregate(
       randomUUID(),
       user.id,
       store.id,
-      items.map((item) =>
-        CartItemEntity.restore(item.id, item.productId, item.quantity),
-      ),
+      items.map((item) => CartItemEntity.create(item.product, item.quantity)),
       active,
     );
   }
@@ -78,8 +89,12 @@ export class CartAggregate {
     return this._storeId;
   }
 
-  get items(): CartItemEntity[] {
-    return this._items;
+  get items(): CartItemProp[] {
+    return this._items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
   }
 
   get active(): boolean {
@@ -100,24 +115,7 @@ export class CartAggregate {
       existingItem.quantity += quantity;
       return;
     }
-    const newItem = CartItemEntity.create(product.id, quantity);
+    const newItem = CartItemEntity.create(product, quantity);
     this._items.push(newItem);
-  }
-
-  removeItem(user: UserEntity, productId: string): void {
-    if (user.id !== this._userId) {
-      return;
-    }
-    this._items = this._items.filter((item) => item.productId !== productId);
-  }
-
-  updateQuantity(user: UserEntity, productId: string, quantity: number): void {
-    if (user.id !== this._userId) {
-      return;
-    }
-    const item = this._items.find((item) => item.productId === productId);
-    if (item) {
-      item.quantity = quantity;
-    }
   }
 }
