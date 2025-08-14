@@ -102,4 +102,14 @@ export class CartRepository {
     );
     return carts;
   }
+
+  async addItem(cart: CartAggregate, itemId: string): Promise<void> {
+    const item = cart.items.find((i) => i.id === itemId);
+    this.cartItemRepository.save({
+      cartId: cart.id,
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+    });
+  }
 }

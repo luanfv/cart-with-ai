@@ -11,6 +11,8 @@ import {
   FindCartByUserDtoOutput,
   FindCartByUserParamsDtoInput,
 } from './dto/find-cart-by-user.dto';
+import { AddCartItemBodyDtoInput } from './dto/add-cart-item.dto';
+import { AddCartItemService } from '@cart/application/add-cart-item.service';
 
 @Controller('/api/cart')
 export class CartController {
@@ -18,6 +20,7 @@ export class CartController {
     private readonly createCartService: CreateCartService,
     private readonly findCartServiceById: FindCartByIdService,
     private readonly findCartByUserService: FindCartByUserService,
+    private readonly addCartItemService: AddCartItemService,
   ) {}
 
   @Post()
@@ -63,5 +66,13 @@ export class CartController {
         items: cart.items,
       })),
     );
+  }
+
+  @Post('/:cartId/item')
+  async addCartItem(
+    @Param('cartId') cartId: string,
+    @Body() { productId, quantity, userId }: AddCartItemBodyDtoInput,
+  ): Promise<void> {
+    await this.addCartItemService.execute(userId, cartId, productId, quantity);
   }
 }

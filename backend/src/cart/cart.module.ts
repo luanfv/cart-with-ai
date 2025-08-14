@@ -13,6 +13,7 @@ import { StoreRepository } from './infra/repository/store.repository';
 import { FindCartByIdService } from './application/find-cart-by-id.service';
 import { ProductRepository } from './infra/repository/product.repository';
 import { FindCartByUserService } from './application/find-cart-by-user.service';
+import { AddCartItemService } from './application/add-cart-item.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart, CartItem, User, Product, Store])],
@@ -20,6 +21,7 @@ import { FindCartByUserService } from './application/find-cart-by-user.service';
     CreateCartService,
     FindCartByIdService,
     FindCartByUserService,
+    AddCartItemService,
     CartRepository,
     UserRepository,
     StoreRepository,

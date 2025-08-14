@@ -18,3 +18,13 @@ GET http://localhost:3000/api/cart/0578ccd8-e4f2-4bef-ba1d-eb529ec8bd4c
 
 ### Get by User ID
 GET http://localhost:3000/api/cart/user/6e1c8907-ca9e-4d2c-930e-5fb1243d07f3
+
+### Add Cart Item
+POST http://localhost:3000/api/cart/c3a4969a-0417-428c-bb31-3535dcda5f8f/item
+Content-Type: application/json
+
+{
+  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3",
+  "productId": "23b8f600-e313-4a80-8096-12ef68543ee6",
+  "quantity": 2
+}
