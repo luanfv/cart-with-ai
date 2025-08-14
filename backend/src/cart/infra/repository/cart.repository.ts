@@ -112,4 +112,15 @@ export class CartRepository {
       quantity: item.quantity,
     });
   }
+
+  async updateItem(cart: CartAggregate, itemId: string): Promise<void> {
+    const item = cart.items.find((i) => i.id === itemId);
+    this.cartItemRepository.update(
+      { id: item.id, cartId: cart.id },
+      {
+        productId: item.productId,
+        quantity: item.quantity,
+      },
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import { FindCartByUserService } from './../../application/find-cart-by-user.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateCartService } from '@cart/application/create-cart.service';
 import {
   CreateCartBodyDtoInput,
@@ -13,6 +13,8 @@ import {
 } from './dto/find-cart-by-user.dto';
 import { AddCartItemBodyDtoInput } from './dto/add-cart-item.dto';
 import { AddCartItemService } from '@cart/application/add-cart-item.service';
+import { ChangeCartItemQuantityDtoInput } from './dto/change-cart-item-quantity.dto';
+import { ChangeCartItemQuantityService } from '@cart/application/change-cart-item-quantity.service';
 
 @Controller('/api/cart')
 export class CartController {
@@ -21,6 +23,7 @@ export class CartController {
     private readonly findCartServiceById: FindCartByIdService,
     private readonly findCartByUserService: FindCartByUserService,
     private readonly addCartItemService: AddCartItemService,
+    private readonly changeCartItemQuantityService: ChangeCartItemQuantityService,
   ) {}
 
   @Post()
@@ -74,5 +77,19 @@ export class CartController {
     @Body() { productId, quantity, userId }: AddCartItemBodyDtoInput,
   ): Promise<void> {
     await this.addCartItemService.execute(userId, cartId, productId, quantity);
+  }
+
+  @Patch('/:cartId/item/:cartItemId')
+  async changeCartItemQuantity(
+    @Param('cartId') cartId: string,
+    @Param('cartItemId') cartItemId: string,
+    @Body() { quantity, userId }: ChangeCartItemQuantityDtoInput,
+  ): Promise<void> {
+    await this.changeCartItemQuantityService.execute(
+      userId,
+      cartId,
+      cartItemId,
+      quantity,
+    );
   }
 }

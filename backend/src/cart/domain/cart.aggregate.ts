@@ -131,6 +131,27 @@ export class CartAggregate {
     };
   }
 
+  changeItemQuantity(
+    user: UserEntity,
+    cartItemId: string,
+    quantity: number,
+  ): void {
+    if (!this._active) {
+      throw new Error('Cannot change item quantity in inactive cart');
+    }
+    if (user.id !== this._userId) {
+      return;
+    }
+    if (quantity <= 0) {
+      throw new Error('Quantity must be greater than zero');
+    }
+    const item = this._items.find((i) => i.id === cartItemId);
+    if (!item) {
+      throw new Error('Item not found in cart');
+    }
+    item.quantity = quantity;
+  }
+
   disable(): void {
     this._active = false;
   }
