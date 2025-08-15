@@ -110,10 +110,10 @@ export class CartAggregate {
       throw new Error('Cannot add item to inactive cart');
     }
     if (user.id !== this._userId) {
-      return;
+      throw new Error('User does not own this cart');
     }
     if (product.storeId !== this._storeId) {
-      return;
+      throw new Error('Product does not belong to this store');
     }
     const existingItem = this._items.find(
       (item) => item.productId === product.id,
@@ -140,7 +140,7 @@ export class CartAggregate {
       throw new Error('Cannot change item quantity in inactive cart');
     }
     if (user.id !== this._userId) {
-      return;
+      throw new Error('User does not own this cart');
     }
     if (quantity <= 0) {
       throw new Error('Quantity must be greater than zero');
@@ -150,6 +150,20 @@ export class CartAggregate {
       throw new Error('Item not found in cart');
     }
     item.quantity = quantity;
+  }
+
+  removeItem(user: UserEntity, cartItemId: string): void {
+    if (!this._active) {
+      throw new Error('Cannot remove item from inactive cart');
+    }
+    if (user.id !== this._userId) {
+      throw new Error('User does not own this cart');
+    }
+    const itemIndex = this._items.findIndex((i) => i.id === cartItemId);
+    if (itemIndex === -1) {
+      throw new Error('Item not found in cart');
+    }
+    this._items.splice(itemIndex, 1);
   }
 
   disable(): void {

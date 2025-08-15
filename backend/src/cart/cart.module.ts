@@ -15,6 +15,7 @@ import { ProductRepository } from './infra/repository/product.repository';
 import { FindCartByUserService } from './application/find-cart-by-user.service';
 import { AddCartItemService } from './application/add-cart-item.service';
 import { ChangeCartItemQuantityService } from './application/change-cart-item-quantity.service';
+import { RemoveCartItemService } from './application/remove-cart-item.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart, CartItem, User, Product, Store])],
@@ -24,6 +25,7 @@ import { ChangeCartItemQuantityService } from './application/change-cart-item-qu
     FindCartByUserService,
     AddCartItemService,
     ChangeCartItemQuantityService,
+    RemoveCartItemService,
     CartRepository,
     UserRepository,
     StoreRepository,

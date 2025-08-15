@@ -37,3 +37,11 @@ Content-Type: application/json
   "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3",
   "quantity": 5
 }
+
+### Remove Cart Item
+DELETE http://localhost:3000/api/cart/c3a4969a-0417-428c-bb31-3535dcda5f8f/item/419ebeb4-0dfd-4b68-aa40-03186439a2a5
+Content-Type: application/json
+
+{
+  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3"
+}

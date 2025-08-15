@@ -123,4 +123,8 @@ export class CartRepository {
       },
     );
   }
+
+  async removeItem(cart: CartAggregate, itemId: string): Promise<void> {
+    await this.cartItemRepository.delete({ id: itemId, cartId: cart.id });
+  }
 }
