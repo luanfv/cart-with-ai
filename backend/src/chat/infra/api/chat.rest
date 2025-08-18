@@ -1,0 +1,10 @@
+### Criar uma nova sessão de chat
+POST http://localhost:3000/api/chat
+Content-Type: application/json
+
+{
+  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3"
+}
+
+### Buscar uma sessão de chat por ID e userId
+GET http://localhost:3000/api/chat/b2ac9ea6-28f1-4a0d-951f-e26dcdcdac74

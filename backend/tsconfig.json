@@ -13,7 +13,8 @@
     "paths": {
       "@shared/*": ["shared/*"],
       "@catalog/*": ["catalog/*"],
-      "@cart/*": ["cart/*"]
+      "@cart/*": ["cart/*"],
+      "@chat/*": ["chat/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

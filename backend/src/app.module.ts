@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CatalogModule } from './catalog/catalog.module';
 import { CartModule } from '@cart/cart.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChatModule } from '@chat/chat.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     CatalogModule,
     CartModule,
+    ChatModule,
   ],
 })
 export class AppModule {}
