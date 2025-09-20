@@ -4,6 +4,7 @@ import { CatalogModule } from './catalog/catalog.module';
 import { CartModule } from '@cart/cart.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from '@chat/chat.module';
+import { LlmModule } from '@shared/llm/llm.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ChatModule } from '@chat/chat.module';
     CatalogModule,
     CartModule,
     ChatModule,
+    LlmModule,
   ],
 })
 export class AppModule {}
