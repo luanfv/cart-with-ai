@@ -7,6 +7,7 @@ import { UserRepository } from './infra/repository/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatSession } from '@shared/infra/database/entity/chat-session.entity';
 import { User } from '@shared/infra/database/entity/user.entity';
+import { SendMessageToChatService } from './application/send-message-to-chat.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, ChatSession])],
@@ -14,6 +15,7 @@ import { User } from '@shared/infra/database/entity/user.entity';
   providers: [
     CreateChatSessionService,
     FindChatService,
+    SendMessageToChatService,
     ChatRepository,
     UserRepository,
   ],

@@ -17,10 +17,28 @@ export class ChatRepository {
     });
   }
 
-  async findByIdAndUserId(id: string): Promise<ChatSessionAggregate | null> {
+  async findById(id: string): Promise<ChatSessionAggregate | null> {
     const chatSessionFromDatabase = await this.repository.findOne({
       where: {
         id,
+      },
+    });
+    if (!chatSessionFromDatabase) return null;
+    return ChatSessionAggregate.restore(
+      chatSessionFromDatabase.id,
+      chatSessionFromDatabase.userId,
+      chatSessionFromDatabase.createdAt,
+    );
+  }
+
+  async findByIdAndUserId(
+    id: string,
+    userId: string,
+  ): Promise<ChatSessionAggregate | null> {
+    const chatSessionFromDatabase = await this.repository.findOne({
+      where: {
+        id,
+        userId,
       },
     });
     if (!chatSessionFromDatabase) return null;

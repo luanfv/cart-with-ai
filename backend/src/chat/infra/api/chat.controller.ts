@@ -1,3 +1,4 @@
+import { SendMessageToChatService } from './../../application/send-message-to-chat.service';
 import { CreateChatSessionService } from '@chat/application/create-chat-session.service';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
@@ -12,6 +13,7 @@ export class ChatController {
   constructor(
     private readonly createChatSessionService: CreateChatSessionService,
     private readonly findChatService: FindChatService,
+    private readonly sendMessageToChatService: SendMessageToChatService,
   ) {}
 
   @Post()
@@ -30,5 +32,19 @@ export class ChatController {
       chatSession.userId,
       chatSession.createdAt,
     );
+  }
+
+  @Post('/:id/message')
+  async sendMessage(
+    @Param('id') id: string,
+    @Body() body: { message: string; userId: string },
+  ) {
+    return {
+      response: await this.sendMessageToChatService.execute(
+        id,
+        body.userId,
+        body.message,
+      ),
+    };
   }
 }

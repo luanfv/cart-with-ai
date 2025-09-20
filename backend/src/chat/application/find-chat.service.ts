@@ -6,7 +6,7 @@ export class FindChatService {
   constructor(private readonly chatRepository: ChatRepository) {}
 
   async execute(chatId: string) {
-    const chatSession = await this.chatRepository.findByIdAndUserId(chatId);
+    const chatSession = await this.chatRepository.findById(chatId);
     if (!chatSession) throw new Error('Chat session not found');
     return chatSession;
   }
