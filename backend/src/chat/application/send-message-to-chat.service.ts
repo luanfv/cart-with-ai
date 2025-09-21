@@ -1,6 +1,7 @@
+import { ChatMessageRepository } from './../infra/repository/chat-message.repository';
 import { ChatMessageEntity } from '@chat/domain/chat-message.entity';
 import { ChatRepository } from '@chat/infra/repository/chat.repository';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   IAnswerMessageService,
   OPENAI_ANSWER_MESSAGE_SERVICE_PROVIDER,
@@ -12,6 +13,7 @@ export class SendMessageToChatService {
     private readonly chatRepository: ChatRepository,
     @Inject(OPENAI_ANSWER_MESSAGE_SERVICE_PROVIDER)
     private readonly answerMessageService: IAnswerMessageService,
+    private readonly chatMessageRepository: ChatMessageRepository,
   ) {}
 
   async execute(chatId: string, userId: string, message: string) {
@@ -19,7 +21,7 @@ export class SendMessageToChatService {
       chatId,
       userId,
     );
-    if (!chatSession) throw new Error('Chat session not found');
+    if (!chatSession) throw new NotFoundException('Chat session not found');
     const userMessage = ChatMessageEntity.create(message, 'user', 'text');
     const llmAnswer = await this.answerMessageService.execute(message);
     const llmAnswerMessage = ChatMessageEntity.create(
@@ -32,7 +34,7 @@ export class SendMessageToChatService {
     );
     chatSession.addMessage(userMessage);
     chatSession.addMessage(llmAnswerMessage);
-    console.log('messages:', chatSession.messages);
+    await this.chatMessageRepository.saveManyMessages(chatSession.messages);
     return llmAnswerMessage.values.content;
   }
 }

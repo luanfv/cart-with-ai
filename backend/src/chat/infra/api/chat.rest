@@ -3,17 +3,17 @@ POST http://localhost:3000/api/chat
 Content-Type: application/json
 
 {
-  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3"
+  "userId": "59e95b91-3b1d-4042-a1fd-c77b88369fba"
 }
 
 ### Buscar uma sessão de chat por ID e userId
-GET http://localhost:3000/api/chat/b2ac9ea6-28f1-4a0d-951f-e26dcdcdac74
+GET http://localhost:3000/api/chat/28901115-984f-4648-98aa-26222040bc11
 
 ### Enviar uma mensagem para a sessão de chat
-POST http://localhost:3000/api/chat/8421e892-5d9a-49e6-96e5-7b9356016cc1/message
+POST http://localhost:3000/api/chat/28901115-984f-4648-98aa-26222040bc11/message
 Content-Type: application/json
 
 {
   "message": "o que preciso para fazer um bolo de chocolate?",
-  "userId": "6e1c8907-ca9e-4d2c-930e-5fb1243d07f3"
+  "userId": "59e95b91-3b1d-4042-a1fd-c77b88369fba"
 }

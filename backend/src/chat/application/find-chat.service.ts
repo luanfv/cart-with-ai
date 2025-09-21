@@ -1,5 +1,5 @@
 import { ChatRepository } from '@chat/infra/repository/chat.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class FindChatService {
@@ -7,7 +7,7 @@ export class FindChatService {
 
   async execute(chatId: string) {
     const chatSession = await this.chatRepository.findById(chatId);
-    if (!chatSession) throw new Error('Chat session not found');
+    if (!chatSession) throw new NotFoundException('Chat session not found');
     return chatSession;
   }
 }

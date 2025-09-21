@@ -8,9 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatSession } from '@shared/infra/database/entity/chat-session.entity';
 import { User } from '@shared/infra/database/entity/user.entity';
 import { SendMessageToChatService } from './application/send-message-to-chat.service';
+import { ChatMessageRepository } from './infra/repository/chat-message.repository';
+import { ChatMessage } from '@shared/infra/database/entity/chat-message.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, ChatSession])],
+  imports: [TypeOrmModule.forFeature([User, ChatSession, ChatMessage])],
   controllers: [ChatController],
   providers: [
     CreateChatSessionService,
@@ -18,6 +20,7 @@ import { SendMessageToChatService } from './application/send-message-to-chat.ser
     SendMessageToChatService,
     ChatRepository,
     UserRepository,
+    ChatMessageRepository,
   ],
 })
 export class ChatModule {}

@@ -1,7 +1,7 @@
 import { UserRepository } from '@chat/infra/repository/user.repository';
 import { ChatSessionAggregate } from '@chat/domain/chat-session.entity';
 import { ChatRepository } from '@chat/infra/repository/chat.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class CreateChatSessionService {
@@ -12,7 +12,7 @@ export class CreateChatSessionService {
 
   async execute(userId: string) {
     const user = await this.userRepository.findById(userId);
-    if (!user) throw new Error('User not found');
+    if (!user) throw new NotFoundException('User not found');
     const chatSession = ChatSessionAggregate.create(user);
     await this.chatRepository.create(chatSession);
     return chatSession;

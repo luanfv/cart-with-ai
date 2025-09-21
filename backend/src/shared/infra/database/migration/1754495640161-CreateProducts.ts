@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateProducts1754495640161 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS vector;`);
     await queryRunner.query(`
       CREATE TABLE products (
           id VARCHAR(46) PRIMARY KEY,

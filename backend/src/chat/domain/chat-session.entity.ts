@@ -7,7 +7,7 @@ type GetMessageOutput = {
   chatSessionId: string;
   content: string;
   sender: 'user' | 'assistant';
-  openAiMessageId: string;
+  openAiMessageId?: string;
   createdAt: Date;
   messageType: 'text' | 'suggest_carts_result';
 };
