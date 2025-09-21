@@ -33,6 +33,6 @@ export class SendMessageToChatService {
     chatSession.addMessage(userMessage);
     chatSession.addMessage(llmAnswerMessage);
     console.log('messages:', chatSession.messages);
-    return llmAnswerMessage.toObject().content;
+    return llmAnswerMessage.values.content;
   }
 }

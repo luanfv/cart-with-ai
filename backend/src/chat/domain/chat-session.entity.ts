@@ -2,6 +2,16 @@ import { randomUUID } from 'node:crypto';
 import { UserEntity } from './user.entity';
 import { ChatMessageEntity } from './chat-message.entity';
 
+type GetMessageOutput = {
+  id: string;
+  chatSessionId: string;
+  content: string;
+  sender: 'user' | 'assistant';
+  openAiMessageId: string;
+  createdAt: Date;
+  messageType: 'text' | 'suggest_carts_result';
+};
+
 export class ChatSessionAggregate {
   private _id: string;
   private _userId: string;
@@ -38,24 +48,23 @@ export class ChatSessionAggregate {
     return this._createdAt;
   }
 
-  get messages(): {
-    id: string;
-    chatSessionId: string;
-    content: string;
-    sender: 'user' | 'assistant';
-    openAiMessageId: string;
-    createdAt: Date;
-    messageType: 'text' | 'suggest_carts_result';
-  }[] {
-    return this._messages.map((message) => message.toObject());
+  get messages(): GetMessageOutput[] {
+    return this._messages.map((message) => message.values);
   }
 
   addMessage(message: ChatMessageEntity): void {
-    if (!!message.chatSessionId && message.chatSessionId !== this._id) {
+    const {
+      id,
+      content,
+      sender,
+      openAiMessageId,
+      createdAt,
+      messageType,
+      chatSessionId,
+    } = message.values;
+    if (!!chatSessionId && chatSessionId !== this._id) {
       throw new Error('Message does not belong to this chat session');
     }
-    const { id, content, sender, openAiMessageId, createdAt, messageType } =
-      message.toObject();
     this._messages.push(
       ChatMessageEntity.restore(
         id,

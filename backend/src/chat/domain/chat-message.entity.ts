@@ -72,7 +72,7 @@ export class ChatMessageEntity {
     return this._chatSessionId;
   }
 
-  toObject() {
+  get values() {
     return {
       id: this._id,
       chatSessionId: this._chatSessionId,
