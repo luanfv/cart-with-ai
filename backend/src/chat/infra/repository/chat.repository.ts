@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChatSession } from '@shared/infra/database/entity/chat-session.entity';
-import { ChatSessionAggregate } from 'chat/domain/chat-session.entity';
+import { ChatSessionAggregate } from '@chat/domain/chat-session.aggregate';
 import { Repository } from 'typeorm';
 
 export class ChatRepository {

@@ -24,10 +24,6 @@ describe('ChatMessageEntity unit tests', () => {
       expect(message.id).toEqual(expectedId);
     });
 
-    it('SHOULD restore with correct chatSessionId', () => {
-      expect(message.chatSessionId).toEqual(expectedChatSessionId);
-    });
-
     it('SHOULD restore with correct content', () => {
       expect(message.values.content).toEqual(expectedContent);
     });

@@ -1,5 +1,5 @@
 import { UserRepository } from '@chat/infra/repository/user.repository';
-import { ChatSessionAggregate } from '@chat/domain/chat-session.entity';
+import { ChatSessionAggregate } from '@chat/domain/chat-session.aggregate';
 import { ChatRepository } from '@chat/infra/repository/chat.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 

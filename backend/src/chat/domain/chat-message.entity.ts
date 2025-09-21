@@ -68,10 +68,6 @@ export class ChatMessageEntity {
     return this._id;
   }
 
-  get chatSessionId(): string | undefined {
-    return this._chatSessionId;
-  }
-
   get values() {
     return {
       id: this._id,
