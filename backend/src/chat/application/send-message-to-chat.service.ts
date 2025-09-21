@@ -16,14 +16,17 @@ export class SendMessageToChatService {
     private readonly chatMessageRepository: ChatMessageRepository,
   ) {}
 
-  async execute(chatId: string, userId: string, message: string) {
-    const chatSession = await this.chatRepository.findByIdAndUserId(
-      chatId,
-      userId,
-    );
+  async execute(chatSessionId: string, userId: string, message: string) {
+    const [chatSession, lastMessage] = await Promise.all([
+      this.chatRepository.findByIdAndUserId(chatSessionId, userId),
+      this.chatMessageRepository.findLastMessageByChatSessionId(chatSessionId),
+    ]);
     if (!chatSession) throw new NotFoundException('Chat session not found');
     const userMessage = ChatMessageEntity.create(message, 'user', 'text');
-    const llmAnswer = await this.answerMessageService.execute(message);
+    const llmAnswer = await this.answerMessageService.execute({
+      message,
+      messageId: lastMessage?.values?.openAiMessageId || null,
+    });
     const llmAnswerMessage = ChatMessageEntity.create(
       llmAnswer?.message || '',
       'assistant',

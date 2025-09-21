@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  AnswerMessageInput,
   AnswerMessageOutput,
   IAnswerMessageService,
 } from '@shared/interface/llm/service/answer-message';
@@ -40,12 +41,14 @@ export class OpenAIAnswerMessageService implements IAnswerMessageService {
 
   constructor(private openai: OpenAI) {}
 
-  async execute(message: string): Promise<AnswerMessageOutput> {
+  async execute(input: AnswerMessageInput): Promise<AnswerMessageOutput> {
     try {
+      console.log('input', input);
       const response = await this.openai.responses.parse({
         model: 'gpt-4.1-nano',
+        previous_response_id: input.messageId ?? null,
         instructions: this.ANSWER_MESSAGE_PROMPT,
-        input: message,
+        input: input.message,
         text: {
           format: zodTextFormat(answerMessageSchema, 'answerSchema'),
         },

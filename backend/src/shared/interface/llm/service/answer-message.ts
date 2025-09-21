@@ -1,3 +1,10 @@
+export class AnswerMessageInput {
+  constructor(
+    readonly message: string,
+    readonly messageId?: string,
+  ) {}
+}
+
 export class AnswerMessageOutput {
   constructor(
     readonly responseId: string,
@@ -16,7 +23,7 @@ export class AnswerMessageOutput {
 }
 
 export interface IAnswerMessageService {
-  execute(message: string): Promise<AnswerMessageOutput>;
+  execute(input: AnswerMessageInput): Promise<AnswerMessageOutput>;
 }
 
 export const OPENAI_ANSWER_MESSAGE_SERVICE_PROVIDER = Symbol(
