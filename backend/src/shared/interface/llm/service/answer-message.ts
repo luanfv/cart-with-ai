@@ -9,16 +9,12 @@ export class AnswerMessageOutput {
   constructor(
     readonly responseId: string,
     readonly message?: string,
-    readonly action?:
-      | {
-          type?: 'send_message';
-        }
-      | {
-          type?: 'suggest_carts';
-          payload?: {
-            input?: string;
-          };
-        },
+    readonly action?: {
+      type?: 'suggest_carts';
+      payload?: {
+        input?: string;
+      };
+    },
   ) {}
 }
 

@@ -43,7 +43,6 @@ export class OpenAIAnswerMessageService implements IAnswerMessageService {
 
   async execute(input: AnswerMessageInput): Promise<AnswerMessageOutput> {
     try {
-      console.log('input', input);
       const response = await this.openai.responses.parse({
         model: 'gpt-4.1-nano',
         previous_response_id: input.messageId ?? null,
@@ -57,7 +56,7 @@ export class OpenAIAnswerMessageService implements IAnswerMessageService {
       return new AnswerMessageOutput(
         response.id,
         response.output_parsed.message,
-        response.output_parsed.action,
+        response.output_parsed.action as any,
       );
     } catch {
       return null;

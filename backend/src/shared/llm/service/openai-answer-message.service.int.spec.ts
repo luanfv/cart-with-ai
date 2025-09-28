@@ -26,7 +26,7 @@ describe('OpenAIAnswerMessageService integration tests', () => {
       const openaiService = module.get<IAnswerMessageService>(
         OPENAI_ANSWER_MESSAGE_SERVICE_PROVIDER,
       );
-      const response = await openaiService.execute('doce');
+      const response = await openaiService.execute({ message: 'oi' });
       expect(response).toEqual(
         expect.objectContaining({
           responseId: expect.any(String),
@@ -44,9 +44,9 @@ describe('OpenAIAnswerMessageService integration tests', () => {
       const openaiService = module.get<IAnswerMessageService>(
         OPENAI_ANSWER_MESSAGE_SERVICE_PROVIDER,
       );
-      const response = await openaiService.execute(
-        'o que preciso para fazer um bolo de chocolate?',
-      );
+      const response = await openaiService.execute({
+        message: 'o que preciso para fazer um bolo de chocolate?',
+      });
       expect(response).toEqual(
         expect.objectContaining({
           responseId: expect.any(String),

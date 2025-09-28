@@ -33,7 +33,6 @@ export class ChatMessageRepository {
         where: { chatSessionId, openAiMessageId: Not(IsNull()) },
         order: { createdAt: 'DESC' },
       });
-      console.log('message', message);
       if (!message) return null;
       return ChatMessageEntity.restore(
         message.id,
